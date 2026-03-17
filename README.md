@@ -17,17 +17,50 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+Real-world recommenders like Spotify and YouTube build a model of your taste from everything you do — skips, replays, likes, time of day — and use that signal to surface content you haven't heard yet. Most production systems combine two approaches: collaborative filtering (finding users who behave like you and borrowing their taste) and content-based filtering (matching song attributes directly to your preferences). This simulation focuses on the content-based side. Rather than tracking user behavior over time, it takes a snapshot of what a user says they want — their preferred genre, mood, energy level, and whether they lean acoustic — and scores every song in the catalog against that profile. The goal is to surface the most relevant match, not just the most popular song. Each feature is weighted differently based on how much it actually distinguishes songs from one another, so mood and energy carry more influence than valence, which has a narrower range across the catalog.
 
-Some prompts to answer:
+### Song Features
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+Each `Song` object stores the following attributes used in scoring:
 
-You can include a simple diagram or bullet list if helpful.
+| Feature | Type | Role in scoring |
+|---|---|---|
+| `genre` | string | Categorical match against user's preferred genre |
+| `mood` | string | Matched against user's list of preferred moods |
+| `energy` | float (0–1) | Gaussian proximity to user's target energy level |
+| `tempo_bpm` | float | Stored on the song; not directly scored (correlated with energy) |
+| `valence` | float (0–1) | Gaussian proximity to user's target valence |
+| `danceability` | float (0–1) | Gaussian proximity to user's target danceability |
+| `acousticness` | float (0–1) | Directional score based on whether user prefers acoustic or not |
+
+### UserProfile Fields
+
+Each `UserProfile` stores what the user wants:
+
+| Field | Type | Maps to |
+|---|---|---|
+| `favorite_genre` | string | Matched against `song.genre` |
+| `favorite_moods` | List[str] | Matched against `song.mood` — any match scores 1.0 |
+| `target_energy` | float (0–1) | Gaussian proximity against `song.energy` |
+| `likes_acoustic` | bool | If True, rewards high `acousticness`; if False, rewards low |
+| `target_valence` | float (0–1) | Gaussian proximity against `song.valence` |
+| `target_danceability` | float (0–1) | Gaussian proximity against `song.danceability` |
+
+### Scoring and Ranking
+
+Each song receives a weighted score between 0 and 1:
+
+- **Categorical features** (mood, genre) use binary matching: 1.0 for a match, 0.0 otherwise
+- **Numeric features** (energy) use Gaussian proximity: songs closer to the user's target score higher, with a smooth dropoff the further they are
+- **Directional features** (acousticness) score based on alignment with a boolean preference rather than proximity to a target value
+
+Feature weights reflect how much each feature distinguishes songs in the catalog:
+
+```
+score = 0.25 × mood_match + 0.20 × energy_proximity + 0.20 × acoustic_alignment + 0.15 × genre_match + 0.12 × danceability_proximity + 0.08 × valence_proximity
+```
+
+Songs are ranked by score descending and the top `k` are returned.
 
 ---
 

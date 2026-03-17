@@ -15,8 +15,15 @@ from recommender import load_songs, recommend_songs
 def main() -> None:
     songs = load_songs("data/songs.csv") 
 
-    # Starter example profile
-    user_prefs = {"genre": "pop", "mood": "happy", "energy": 0.8}
+    # User profile modeled after Nine Vicious — Atlanta trap/rage, YSL, high energy, melodic auto-tune flow
+    user_prefs = {
+        "genre":               "hip-hop",
+        "moods":               ["intense", "uplifting"],
+        "energy":              0.85,
+        "likes_acoustic":      False,
+        "target_valence":      0.68,
+        "target_danceability": 0.82,
+    }
 
     recommendations = recommend_songs(user_prefs, songs, k=5)
 
