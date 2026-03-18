@@ -125,12 +125,12 @@ class Recommender:
         self.songs = songs
 
     def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
-        # TODO: Implement recommendation logic
-        return self.songs[:k]
+        ranked = sorted(self.songs, key=lambda s: score_song(s, user)[0], reverse=True)
+        return ranked[:k]
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
-        # TODO: Implement explanation logic
-        return "Explanation placeholder"
+        _, reasons = score_song(song, user)
+        return " | ".join(reasons)
 
 def load_songs(csv_path: str) -> List[Dict]:
     """
@@ -155,11 +155,36 @@ def load_songs(csv_path: str) -> List[Dict]:
             })
     return songs
 
-def recommend_songs(user_prefs      : Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
+def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
     """
     Functional implementation of the recommendation logic.
     Required by src/main.py
     """
-    # TODO: Implement scoring and ranking logic
-    # Expected return format: (song_dict, score, explanation)
-    return []
+    user = UserProfile(
+        favorite_genre=user_prefs.get("genre", ""),
+        favorite_moods=user_prefs.get("moods", []),
+        target_energy=float(user_prefs.get("energy", 0.5)),
+        likes_acoustic=bool(user_prefs.get("likes_acoustic", False)),
+        target_valence=float(user_prefs.get("target_valence", 0.5)),
+        target_danceability=float(user_prefs.get("target_danceability", 0.5)),
+    )
+
+    scored = []
+    for song_dict in songs:
+        song = Song(
+            id=song_dict["id"],
+            title=song_dict["title"],
+            artist=song_dict["artist"],
+            genre=song_dict["genre"],
+            mood=song_dict["mood"],
+            energy=song_dict["energy"],
+            tempo_bpm=song_dict["tempo_bpm"],
+            valence=song_dict["valence"],
+            danceability=song_dict["danceability"],
+            acousticness=song_dict["acousticness"],
+        )
+        total, reasons = score_song(song, user)
+        explanation = " | ".join(reasons)
+        scored.append((song_dict, total, explanation))
+
+    return sorted(scored, key=lambda x: x[1], reverse=True)[:k]
