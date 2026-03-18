@@ -13,7 +13,8 @@ from recommender import load_songs, recommend_songs
 
 
 def main() -> None:
-    songs = load_songs("data/songs.csv") 
+    songs = load_songs("data/songs.csv")
+    print(f"Loaded songs: {len(songs)}")
 
     # User profile modeled after Nine Vicious — Atlanta trap/rage, YSL, high energy, melodic auto-tune flow
     user_prefs = {
