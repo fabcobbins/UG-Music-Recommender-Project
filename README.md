@@ -64,6 +64,77 @@ Songs are ranked by score descending and the top `k` are returned.
 
 ---
 
+### Algorithm Recipe
+
+This is the step-by-step process the system follows every time it runs:
+
+1. **Load the catalog** — Read `songs.csv` and parse every row into a `Song` object. All 18 songs are held in memory.
+2. **Read the user profile** — Pull genre, moods, target energy, acoustic preference, target valence, and target danceability from `user_prefs`.
+3. **Score every song** — For each song, run it through 6 independent judges and sum their weighted outputs:
+   - **Mood (×0.25):** Is `song.mood` in the user's mood list? → `1.0` or `0.0`
+   - **Energy (×0.20):** Gaussian proximity between `song.energy` and `target_energy` — perfect match = 1.0, drops off smoothly with distance
+   - **Acousticness (×0.20):** If `likes_acoustic=True` → reward `song.acousticness`; if `False` → reward `1 − song.acousticness`
+   - **Genre (×0.15):** Does `song.genre` match `favorite_genre`? → `1.0` or `0.0`
+   - **Danceability (×0.12):** Gaussian proximity between `song.danceability` and `target_danceability`
+   - **Valence (×0.08):** Gaussian proximity between `song.valence` and `target_valence`
+4. **Rank** — Sort all scored songs from highest to lowest score.
+5. **Slice** — Return the top `k` songs (default 5).
+6. **Explain** — For each result, generate a human-readable string reporting which judges fired and what the key scores were.
+
+The Gaussian proximity formula used for numeric features:
+
+```
+gaussian(song_val, target) = exp( -((song_val - target)² / (2 × σ²)) )   where σ = 0.2
+```
+
+---
+
+### System Flowchart
+
+The diagram below shows how a single song moves from the CSV file to the final ranked output:
+
+```mermaid
+flowchart TD
+    A([songs.csv]) --> B[load_songs\nparse each row into a Song object]
+    B --> C[(Song catalog\n18 songs in memory)]
+
+    U([user_prefs dict]) --> V[Build UserProfile\ngenre · moods · energy\nacoustic · valence · danceability]
+
+    C --> D
+    V --> D
+
+    D[Pick one Song from catalog] --> E
+
+    subgraph E [score_song — 6 judges]
+        J1[Mood × 0.25\nsong.mood in user.favorite_moods?]
+        J2[Energy × 0.20\nGaussian distance vs target_energy]
+        J3[Acoustic × 0.20\nlikes_acoustic → directional score]
+        J4[Genre × 0.15\nsong.genre == favorite_genre?]
+        J5[Danceability × 0.12\nGaussian distance vs target_danceability]
+        J6[Valence × 0.08\nGaussian distance vs target_valence]
+    end
+
+    E --> F[Sum weighted scores\nfinal_score between 0.0 and 1.0]
+    F --> G{More songs\nin catalog?}
+    G -- Yes --> D
+    G -- No --> H[Sort all songs by score descending]
+    H --> I[Slice top k results]
+    I --> J[explain_recommendation for each song]
+    J --> K([Printed output\nTitle · Score · Because...])
+```
+
+---
+
+### Known Biases and Limitations
+
+- **Mood dominance:** With a weight of 0.25, mood is the single strongest signal. A rock song that matches the user's mood will outscore a hip-hop song that only matches genre — even if the user strongly prefers hip-hop. This is intentional but worth knowing.
+- **Genre is a hard filter at low weight:** Genre uses binary matching (1.0 or 0.0) but carries only 0.15 weight. A song in a different genre can still score well on all other features and appear in the top 5. This creates cross-genre recommendations that may feel unexpected.
+- **No catalog diversity enforcement:** The system can return 5 songs by the same artist or in the same genre if they all score highly. There is no diversity injection.
+- **Acoustic preference is one-directional:** `likes_acoustic` is a boolean, not a target value. A user who wants a *slightly* acoustic sound gets the same scoring function as one who wants *fully* acoustic.
+- **Small catalog amplifies bias:** With only 18 songs, a missing mood-genre combination (e.g., no hip-hop song with mood "intense") means the top result may not actually match what the user wants — even with a perfect profile.
+
+---
+
 ## Getting Started
 
 ### Setup
