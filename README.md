@@ -135,6 +135,73 @@ flowchart TD
 
 ---
 
+### Sample Terminal Output
+
+Profile used: Nine Vicious (hip-hop, moods: intense + uplifting, energy: 0.85, no acoustic)
+
+```
+Loaded songs: 18
+
+============================================================
+  TOP RECOMMENDATIONS
+  Profile: hip-hop | moods: ['intense', 'uplifting']
+============================================================
+
+#1  Gold Chain Dreams  --  Verse Theory
+    Genre: hip-hop  |  Mood: uplifting  |  Score: 0.94
+    Breakdown:
+      • Mood matched (uplifting): +0.25
+      • Energy proximity (0.78 vs 0.85): +0.19
+      • Acoustic alignment (0.12): +0.18
+      • Genre matched (hip-hop): +0.15
+      • Danceability proximity (0.84 vs 0.82): +0.12
+      • Valence proximity (0.85 vs 0.68): +0.06
+
+#2  Gym Hero  --  Max Pulse
+    Genre: pop  |  Mood: intense  |  Score: 0.81
+    Breakdown:
+      • Mood matched (intense): +0.25
+      • Energy proximity (0.93 vs 0.85): +0.18
+      • Acoustic alignment (0.05): +0.19
+      • Genre no match (pop != hip-hop): +0.00
+      • Danceability proximity (0.88 vs 0.82): +0.11
+      • Valence proximity (0.77 vs 0.68): +0.07
+
+#3  Storm Runner  --  Voltline
+    Genre: rock  |  Mood: intense  |  Score: 0.76
+    Breakdown:
+      • Mood matched (intense): +0.25
+      • Energy proximity (0.91 vs 0.85): +0.19
+      • Acoustic alignment (0.10): +0.18
+      • Genre no match (rock != hip-hop): +0.00
+      • Danceability proximity (0.66 vs 0.82): +0.09
+      • Valence proximity (0.48 vs 0.68): +0.05
+
+#4  Sunrise City  --  Neon Echo
+    Genre: pop  |  Mood: happy  |  Score: 0.54
+    Breakdown:
+      • Mood no match (happy not in ['intense', 'uplifting']): +0.00
+      • Energy proximity (0.82 vs 0.85): +0.20
+      • Acoustic alignment (0.18): +0.16
+      • Genre no match (pop != hip-hop): +0.00
+      • Danceability proximity (0.79 vs 0.82): +0.12
+      • Valence proximity (0.84 vs 0.68): +0.06
+
+#5  Neon Surge  --  Gridlock
+    Genre: edm  |  Mood: euphoric  |  Score: 0.51
+    Breakdown:
+      • Mood no match (euphoric not in ['intense', 'uplifting']): +0.00
+      • Energy proximity (0.95 vs 0.85): +0.18
+      • Acoustic alignment (0.06): +0.19
+      • Genre no match (edm != hip-hop): +0.00
+      • Danceability proximity (0.93 vs 0.82): +0.10
+      • Valence proximity (0.91 vs 0.68): +0.04
+
+============================================================
+```
+
+---
+
 ## Getting Started
 
 ### Setup
