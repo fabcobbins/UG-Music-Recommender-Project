@@ -74,10 +74,6 @@ A third improvement would be **diversity enforcement**. Right now nothing stops 
 
 ## 9. Personal Reflection
 
-A few sentences about your experience.
+This project was smooth and actually got me interested in something I didn't expect to care about — data collection. The biggest thing I learned is how much the quality and size of your dataset determines everything else. Working with only 18 songs made it obvious really fast. The scoring logic was solid, the math was working correctly, but the results still felt off in certain cases — not because the algorithm was wrong, but because there just wasn't enough data for it to work with. You can't recommend good jazz if you only have one jazz song.
 
-Prompts:
-
-- What you learned about recommender systems
-- Something unexpected or interesting you discovered
-- How this changed the way you think about music recommendation apps
+What surprised me is how a system this simple can still *feel* like a real recommender when the conditions are right. The lofi profile in particular — when everything lined up, the top 3 results were exactly what you'd expect. It felt like Spotify for a second. That made me realize the algorithm isn't the hard part. The hard part is having data that's rich enough, diverse enough, and accurate enough to let the algorithm do its job. Building the foundation right — a clean scoring system with good weights and transparent reasoning — matters way more early on than trying to add complexity. When you eventually do get more data, a strong foundation means the whole system scales up instead of falling apart.
