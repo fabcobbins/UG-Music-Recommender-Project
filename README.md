@@ -558,11 +558,44 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+### Do the Results Feel Right? (Musical Intuition Check)
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+**Profile 3 — Chill Lofi** produced the most intuitive results. All three lofi songs in the catalog (`Library Rain`, `Focus Flow`, `Midnight Coding`) ranked #1–#3 with scores 0.97, 0.95, and 0.93. Every judge fired correctly — mood matched, energy was close, acousticness rewarded high-acoustic songs. This felt exactly right: if you're studying late at night and want lofi, those are exactly the songs you'd want. `#4 Spacewalk Thoughts` (ambient/chill) also made sense as a genre-adjacent recommendation.
+
+**Profile 1 — Nine Vicious** also felt right. `Gold Chain Dreams` is the only hip-hop song with mood `uplifting`, so it correctly surfaced first. `Gym Hero` (pop/intense) at #2 felt like a fair cross-genre recommendation — it shares the energy and vibe even if the genre label is different. Real Spotify does this too.
+
+**Profile 4 — Deep Intense Rock** felt slightly off at #3. `Gym Hero` (pop/intense, energy=0.93) outscored every non-rock option because its energy and acousticness were near-perfect matches — even though a rock fan asking for "angry" songs probably doesn't want a pop gym track. The system has no concept of genre family proximity.
+
+---
+
+### Why Does Gold Chain Dreams Rank #1 for the Nine Vicious Profile?
+
+`Gold Chain Dreams` (hip-hop, uplifting, energy=0.78) scored **0.94** — the highest possible for this catalog and profile. Here's exactly why each judge contributed:
+
+| Judge | Song value | User target | Contribution | Why |
+|---|---|---|---|---|
+| Mood (×0.25) | uplifting | ['intense', 'uplifting'] | **+0.25** | Exact match in mood list — full weight fires |
+| Energy (×0.20) | 0.78 | 0.85 | **+0.19** | Gaussian: distance = 0.07, near-perfect proximity |
+| Acousticness (×0.20) | 0.12 | False (no acoustic) | **+0.18** | `1 - 0.12 = 0.88` acoustic score, user dislikes acoustic |
+| Genre (×0.15) | hip-hop | hip-hop | **+0.15** | Exact genre match — full weight fires |
+| Danceability (×0.12) | 0.84 | 0.82 | **+0.12** | Distance = 0.02, essentially perfect |
+| Valence (×0.08) | 0.85 | 0.68 | **+0.06** | Distance = 0.17, Gaussian score reduced but still contributes |
+
+All 6 judges contributed positively. It's the only song in the catalog where mood AND genre both fire together for this profile — that combination (+0.40 combined) is nearly impossible to beat even with perfect numeric scores on other features.
+
+---
+
+### Recurring Song Problem — Gym Hero Shows Up Everywhere
+
+After running all 6 profiles, `Gym Hero` (pop/intense, energy=0.93, acousticness=0.05) appeared in **4 out of 6** top-5 lists. `Storm Runner` and `Sunrise City` each appeared in 4 as well.
+
+**Why Gym Hero keeps appearing:**
+- `energy=0.93` is one of the highest in the catalog — it scores near-perfectly for any high-energy profile
+- `acousticness=0.05` is the second-lowest in the catalog — it earns near-maximum acoustic alignment for every user who sets `likes_acoustic=False`
+- `mood=intense` matches a wide range of profiles
+- These three features together = a floor score of roughly 0.50–0.60 before genre or danceability even fire
+
+**Is the genre weight too strong or too weak?** Genre weight is actually fine at 0.15 — the problem is the **catalog is too small**. With only 1 rock song, 1 hip-hop song, and 1 metal song, a pop song at extreme feature values (high energy, low acoustic) will always leak into non-pop results. A larger catalog with more genre diversity would naturally push genre-mismatched songs further down the list.
 
 ---
 
