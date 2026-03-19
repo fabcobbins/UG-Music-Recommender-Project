@@ -599,6 +599,34 @@ After running all 6 profiles, `Gym Hero` (pop/intense, energy=0.93, acousticness
 
 ---
 
+### Experiment A — Weight Shift (energy ×2, genre ÷2)
+
+**Change made:** `energy: 0.20 → 0.40`, `genre: 0.15 → 0.075`. All other weights unchanged. Weights summed to 1.125, so scores slightly exceeded 1.0 — expected and acceptable for a sensitivity test.
+
+**What changed:**
+- Genre match dropped from a +0.15 bonus to +0.075 — half the reward for matching the user's preferred genre
+- Energy proximity now contributes up to +0.40 per song, dominating the score
+- Top-5 order stayed the same for most profiles — rankings were already energy-driven
+
+**What stayed the same:** Profile 1 (Nine Vicious) and Chill Lofi kept the same exact order. The top song didn't change for any profile.
+
+**Verdict — more different, not more accurate.** Doubling energy made the system care almost exclusively about how intense a song feels. A user who asks for hip-hop gets essentially the same results as one who asks for rock — genre barely distinguishes anything at 0.075. The original 0.20 / 0.15 balance was more intentional and produced more genre-sensitive results.
+
+---
+
+### Experiment B — Feature Removal (mood disabled)
+
+**Change made:** Mood score hard-set to 0.0 for every song. The 0.25 weight was effectively dead weight.
+
+**What changed:**
+- Profile 2 (High-Energy Pop): `Gym Hero` jumped to #1, bumping `Sunrise City` down — Gym Hero's better energy proximity (+0.20) overtook Sunrise City once mood stopped rewarding the happy match
+- All scores compressed — max score dropped from 0.97 to ~0.73 since 0.25 weight was gone
+- Songs with wrong mood but perfect numeric scores climbed the rankings
+
+**Verdict — more different, not more accurate.** Without mood, the system rewards *how a song sounds* over *how the user described what they want*. Mood is the highest-weight feature for a reason — it's the most direct signal of user intent. Removing it made results feel generic and less personal.
+
+---
+
 ## Limitations and Risks
 
 Summarize some limitations of your recommender.
