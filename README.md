@@ -199,7 +199,326 @@ Loaded songs: 18
 
 ============================================================
 ```
-d 
+
+---
+
+### System Evaluation — All Profiles
+
+Six profiles were run to evaluate the recommender, including two adversarial edge cases.
+
+#### Profile 2 — High-Energy Pop
+
+```
+============================================================
+  PROFILE 2 -- High-Energy Pop
+  Profile: pop | moods: ['happy', 'euphoric']
+============================================================
+
+#1  Sunrise City  --  Neon Echo
+    Genre: pop  |  Mood: happy  |  Score: 0.94
+    Breakdown:
+      • Mood matched (happy): +0.25
+      • Energy proximity (0.82 vs 0.90): +0.18
+      • Acoustic alignment (0.18): +0.16
+      • Genre matched (pop): +0.15
+      • Danceability proximity (0.79 vs 0.88): +0.11
+      • Valence proximity (0.84 vs 0.85): +0.08
+
+#2  Neon Surge  --  Gridlock
+    Genre: edm  |  Mood: euphoric  |  Score: 0.82
+    Breakdown:
+      • Mood matched (euphoric): +0.25
+      • Energy proximity (0.95 vs 0.90): +0.19
+      • Acoustic alignment (0.06): +0.19
+      • Genre no match (edm != pop): +0.00
+      • Danceability proximity (0.93 vs 0.88): +0.12
+      • Valence proximity (0.91 vs 0.85): +0.08
+
+#3  Gym Hero  --  Max Pulse
+    Genre: pop  |  Mood: intense  |  Score: 0.73
+    Breakdown:
+      • Mood no match (intense not in ['happy', 'euphoric']): +0.00
+      • Energy proximity (0.93 vs 0.90): +0.20
+      • Acoustic alignment (0.05): +0.19
+      • Genre matched (pop): +0.15
+      • Danceability proximity (0.88 vs 0.88): +0.12
+      • Valence proximity (0.77 vs 0.85): +0.07
+
+#4  Rooftop Lights  --  Indigo Parade
+    Genre: indie pop  |  Mood: happy  |  Score: 0.73
+    Breakdown:
+      • Mood matched (happy): +0.25
+      • Energy proximity (0.76 vs 0.90): +0.16
+      • Acoustic alignment (0.35): +0.13
+      • Genre no match (indie pop != pop): +0.00
+      • Danceability proximity (0.82 vs 0.88): +0.11
+      • Valence proximity (0.81 vs 0.85): +0.08
+
+#5  Gold Chain Dreams  --  Verse Theory
+    Genre: hip-hop  |  Mood: uplifting  |  Score: 0.54
+    Breakdown:
+      • Mood no match (uplifting not in ['happy', 'euphoric']): +0.00
+      • Energy proximity (0.78 vs 0.90): +0.17
+      • Acoustic alignment (0.12): +0.18
+      • Genre no match (hip-hop != pop): +0.00
+      • Danceability proximity (0.84 vs 0.88): +0.12
+      • Valence proximity (0.85 vs 0.85): +0.08
+
+============================================================
+```
+
+#### Profile 3 — Chill Lofi
+
+```
+============================================================
+  PROFILE 3 -- Chill Lofi
+  Profile: lofi | moods: ['chill', 'focused']
+============================================================
+
+#1  Library Rain  --  Paper Lanterns
+    Genre: lofi  |  Mood: chill  |  Score: 0.97
+    Breakdown:
+      • Mood matched (chill): +0.25
+      • Energy proximity (0.35 vs 0.38): +0.20
+      • Acoustic alignment (0.86): +0.17
+      • Genre matched (lofi): +0.15
+      • Danceability proximity (0.58 vs 0.55): +0.12
+      • Valence proximity (0.60 vs 0.58): +0.08
+
+#2  Focus Flow  --  LoRoom
+    Genre: lofi  |  Mood: focused  |  Score: 0.95
+    Breakdown:
+      • Mood matched (focused): +0.25
+      • Energy proximity (0.40 vs 0.38): +0.20
+      • Acoustic alignment (0.78): +0.16
+      • Genre matched (lofi): +0.15
+      • Danceability proximity (0.60 vs 0.55): +0.12
+      • Valence proximity (0.59 vs 0.58): +0.08
+
+#3  Midnight Coding  --  LoRoom
+    Genre: lofi  |  Mood: chill  |  Score: 0.93
+    Breakdown:
+      • Mood matched (chill): +0.25
+      • Energy proximity (0.42 vs 0.38): +0.20
+      • Acoustic alignment (0.71): +0.14
+      • Genre matched (lofi): +0.15
+      • Danceability proximity (0.62 vs 0.55): +0.11
+      • Valence proximity (0.56 vs 0.58): +0.08
+
+#4  Spacewalk Thoughts  --  Orbit Bloom
+    Genre: ambient  |  Mood: chill  |  Score: 0.78
+    Breakdown:
+      • Mood matched (chill): +0.25
+      • Energy proximity (0.28 vs 0.38): +0.18
+      • Acoustic alignment (0.92): +0.18
+      • Genre no match (ambient != lofi): +0.00
+      • Danceability proximity (0.41 vs 0.55): +0.09
+      • Valence proximity (0.65 vs 0.58): +0.08
+
+#5  Coffee Shop Stories  --  Slow Stereo
+    Genre: jazz  |  Mood: relaxed  |  Score: 0.56
+    Breakdown:
+      • Mood no match (relaxed not in ['chill', 'focused']): +0.00
+      • Energy proximity (0.37 vs 0.38): +0.20
+      • Acoustic alignment (0.89): +0.18
+      • Genre no match (jazz != lofi): +0.00
+      • Danceability proximity (0.54 vs 0.55): +0.12
+      • Valence proximity (0.71 vs 0.58): +0.06
+
+============================================================
+```
+
+#### Profile 4 — Deep Intense Rock
+
+```
+============================================================
+  PROFILE 4 -- Deep Intense Rock
+  Profile: rock | moods: ['intense', 'angry']
+============================================================
+
+#1  Storm Runner  --  Voltline
+    Genre: rock  |  Mood: intense  |  Score: 0.97
+    Breakdown:
+      • Mood matched (intense): +0.25
+      • Energy proximity (0.91 vs 0.93): +0.20
+      • Acoustic alignment (0.10): +0.18
+      • Genre matched (rock): +0.15
+      • Danceability proximity (0.66 vs 0.65): +0.12
+      • Valence proximity (0.48 vs 0.40): +0.07
+
+#2  Collapse the Sky  --  Iron Fault
+    Genre: metal  |  Mood: angry  |  Score: 0.81
+    Breakdown:
+      • Mood matched (angry): +0.25
+      • Energy proximity (0.97 vs 0.93): +0.20
+      • Acoustic alignment (0.04): +0.19
+      • Genre no match (metal != rock): +0.00
+      • Danceability proximity (0.52 vs 0.65): +0.10
+      • Valence proximity (0.30 vs 0.40): +0.07
+
+#3  Gym Hero  --  Max Pulse
+    Genre: pop  |  Mood: intense  |  Score: 0.72
+    Breakdown:
+      • Mood matched (intense): +0.25
+      • Energy proximity (0.93 vs 0.93): +0.20
+      • Acoustic alignment (0.05): +0.19
+      • Genre no match (pop != rock): +0.00
+      • Danceability proximity (0.88 vs 0.65): +0.06
+      • Valence proximity (0.77 vs 0.40): +0.01
+
+#4  Night Drive Loop  --  Neon Echo
+    Genre: synthwave  |  Mood: moody  |  Score: 0.47
+    Breakdown:
+      • Mood no match (moody not in ['intense', 'angry']): +0.00
+      • Energy proximity (0.75 vs 0.93): +0.13
+      • Acoustic alignment (0.22): +0.16
+      • Genre no match (synthwave != rock): +0.00
+      • Danceability proximity (0.73 vs 0.65): +0.11
+      • Valence proximity (0.49 vs 0.40): +0.07
+
+#5  Sunrise City  --  Neon Echo
+    Genre: pop  |  Mood: happy  |  Score: 0.44
+    Breakdown:
+      • Mood no match (happy not in ['intense', 'angry']): +0.00
+      • Energy proximity (0.82 vs 0.93): +0.17
+      • Acoustic alignment (0.18): +0.16
+      • Genre no match (pop != rock): +0.00
+      • Danceability proximity (0.79 vs 0.65): +0.09
+      • Valence proximity (0.84 vs 0.40): +0.01
+
+============================================================
+```
+
+#### Profile 5 (Edge Case) — Conflicted Listener (high energy + sad mood)
+
+**What we expected to see:** A user who wants `energy: 0.90` but `moods: ['sad', 'melancholic']` should expose tension in the system — sad songs tend to be low energy, so mood and energy judges will pull in opposite directions.
+
+**What happened:** `Hollow Hours` (soul/sad, energy=0.48) scored #1 at 0.74 because mood + genre both fired (+0.40 combined), but the energy judge only contributed +0.02. Songs with energy near 0.90 ranked #3–#5 but had zero mood match. The system resolves the conflict by always prioritizing the highest-weight feature (mood) over numeric proximity.
+
+```
+============================================================
+  PROFILE 5 (EDGE CASE) -- Conflicted Listener
+  Profile: soul | moods: ['sad', 'melancholic']
+============================================================
+
+#1  Hollow Hours  --  Marene
+    Genre: soul  |  Mood: sad  |  Score: 0.74
+    Breakdown:
+      • Mood matched (sad): +0.25
+      • Energy proximity (0.48 vs 0.90): +0.02
+      • Acoustic alignment (0.65): +0.13
+      • Genre matched (soul): +0.15
+      • Danceability proximity (0.55 vs 0.50): +0.12
+      • Valence proximity (0.38 vs 0.30): +0.07
+
+#2  Porch Light  --  Dusty Elm
+    Genre: folk  |  Mood: melancholic  |  Score: 0.61
+    Breakdown:
+      • Mood matched (melancholic): +0.25
+      • Energy proximity (0.31 vs 0.90): +0.00
+      • Acoustic alignment (0.88): +0.18
+      • Genre no match (folk != soul): +0.00
+      • Danceability proximity (0.45 vs 0.50): +0.12
+      • Valence proximity (0.44 vs 0.30): +0.06
+
+#3  Collapse the Sky  --  Iron Fault
+    Genre: metal  |  Mood: angry  |  Score: 0.40
+    Breakdown:
+      • Mood no match (angry not in ['sad', 'melancholic']): +0.00
+      • Energy proximity (0.97 vs 0.90): +0.19
+      • Acoustic alignment (0.04): +0.01
+      • Genre no match (metal != soul): +0.00
+      • Danceability proximity (0.52 vs 0.50): +0.12
+      • Valence proximity (0.30 vs 0.30): +0.08
+
+#4  Storm Runner  --  Voltline
+    Genre: rock  |  Mood: intense  |  Score: 0.36
+    Breakdown:
+      • Mood no match (intense not in ['sad', 'melancholic']): +0.00
+      • Energy proximity (0.91 vs 0.90): +0.20
+      • Acoustic alignment (0.10): +0.02
+      • Genre no match (rock != soul): +0.00
+      • Danceability proximity (0.66 vs 0.50): +0.09
+      • Valence proximity (0.48 vs 0.30): +0.05
+
+#5  Library Rain  --  Paper Lanterns
+    Genre: lofi  |  Mood: chill  |  Score: 0.31
+    Breakdown:
+      • Mood no match (chill not in ['sad', 'melancholic']): +0.00
+      • Energy proximity (0.35 vs 0.90): +0.00
+      • Acoustic alignment (0.86): +0.17
+      • Genre no match (lofi != soul): +0.00
+      • Danceability proximity (0.58 vs 0.50): +0.11
+      • Valence proximity (0.60 vs 0.30): +0.03
+
+============================================================
+```
+
+#### Profile 6 (Edge Case) — Genre Ghost (jazz fan who wants intense mood)
+
+**What we expected to see:** No jazz song in the catalog has `mood: intense` or `mood: euphoric`, so genre and mood can never both fire for the same song. The system should be "tricked" into recommending non-jazz songs.
+
+**What happened:** Confirmed — the genre score (+0.15) never fired for any top-5 result. The entire top 5 is non-jazz. The system is essentially a mood+energy recommender at this point, genre is invisible. This exposes a real limitation: with only 18 songs, missing genre-mood combinations mean the genre weight is wasted.
+
+```
+============================================================
+  PROFILE 6 (EDGE CASE) -- Genre Ghost (Jazz + Intense)
+  Profile: jazz | moods: ['intense', 'euphoric']
+============================================================
+
+#1  Gym Hero  --  Max Pulse
+    Genre: pop  |  Mood: intense  |  Score: 0.77
+    Breakdown:
+      • Mood matched (intense): +0.25
+      • Energy proximity (0.93 vs 0.80): +0.16
+      • Acoustic alignment (0.05): +0.19
+      • Genre no match (pop != jazz): +0.00
+      • Danceability proximity (0.88 vs 0.75): +0.10
+      • Valence proximity (0.77 vs 0.70): +0.08
+
+#2  Storm Runner  --  Voltline
+    Genre: rock  |  Mood: intense  |  Score: 0.75
+    Breakdown:
+      • Mood matched (intense): +0.25
+      • Energy proximity (0.91 vs 0.80): +0.17
+      • Acoustic alignment (0.10): +0.18
+      • Genre no match (rock != jazz): +0.00
+      • Danceability proximity (0.66 vs 0.75): +0.11
+      • Valence proximity (0.48 vs 0.70): +0.04
+
+#3  Neon Surge  --  Gridlock
+    Genre: edm  |  Mood: euphoric  |  Score: 0.72
+    Breakdown:
+      • Mood matched (euphoric): +0.25
+      • Energy proximity (0.95 vs 0.80): +0.15
+      • Acoustic alignment (0.06): +0.19
+      • Genre no match (edm != jazz): +0.00
+      • Danceability proximity (0.93 vs 0.75): +0.08
+      • Valence proximity (0.91 vs 0.70): +0.05
+
+#4  Gold Chain Dreams  --  Verse Theory
+    Genre: hip-hop  |  Mood: uplifting  |  Score: 0.54
+    Breakdown:
+      • Mood no match (uplifting not in ['intense', 'euphoric']): +0.00
+      • Energy proximity (0.78 vs 0.80): +0.20
+      • Acoustic alignment (0.12): +0.18
+      • Genre no match (hip-hop != jazz): +0.00
+      • Danceability proximity (0.84 vs 0.75): +0.11
+      • Valence proximity (0.85 vs 0.70): +0.06
+
+#5  Sunrise City  --  Neon Echo
+    Genre: pop  |  Mood: happy  |  Score: 0.54
+    Breakdown:
+      • Mood no match (happy not in ['intense', 'euphoric']): +0.00
+      • Energy proximity (0.82 vs 0.80): +0.20
+      • Acoustic alignment (0.18): +0.16
+      • Genre no match (pop != jazz): +0.00
+      • Danceability proximity (0.79 vs 0.75): +0.12
+      • Valence proximity (0.84 vs 0.70): +0.06
+
+============================================================
+```
+
 ---
 
 ## Getting Started
