@@ -122,13 +122,16 @@ class Recommender:
     Required by tests/test_recommender.py
     """
     def __init__(self, songs: List[Song]):
+        """Store the song catalog for repeated recommendation queries."""
         self.songs = songs
 
     def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
+        """Return the top-k songs ranked by score_song against the given user profile."""
         ranked = sorted(self.songs, key=lambda s: score_song(s, user)[0], reverse=True)
         return ranked[:k]
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
+        """Return a pipe-separated string of per-feature score contributions for one song."""
         _, reasons = score_song(song, user)
         return " | ".join(reasons)
 
