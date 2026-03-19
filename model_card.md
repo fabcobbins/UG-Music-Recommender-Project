@@ -59,16 +59,13 @@ Prompts:
 
 ---
 
-## 6. Limitations and Bias 
+## 6. Limitations and Bias
 
-Where the system struggles or behaves unfairly. 
+The biggest weakness I found is what I'm calling the "filter bubble by extreme values." A song like *Gym Hero* (pop, intense) kept showing up in the top 5 for almost every high-energy profile — hip-hop, rock, even jazz — because it scores near-perfect on energy and acousticness regardless of what genre the user asked for. With only 18 songs in the catalog, one song that sits at extreme values for multiple numeric features will always leak into results it doesn't belong in, and the user has no way to know that's happening.
 
-Prompts:  
+The second issue is what happens when a user's genre and mood preferences don't overlap in the catalog. I tested a jazz fan who wanted intense music, and the system couldn't find a single jazz song that matched the mood — so it just recommended pop and rock songs instead and the genre score never fired once. The system doesn't tell the user "no match found," it just quietly gives them something different without explanation.
 
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
+Mood being the heaviest weight (0.25) also creates an unequal experience depending on your taste. If you're a lofi or pop listener, your mood is probably in the catalog. If you're into something niche like country or soul, the catalog only has one or two songs for your genre and they might not match your mood at all — meaning the most important judge in the system is dead weight for you specifically. That's a real fairness problem if this were used in a real product.
 
 ---
 
